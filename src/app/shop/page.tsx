@@ -17,23 +17,43 @@ interface Product {
   inStock: boolean;
 }
 
+interface HomeCategory {
+  _id: string;
+  name: string;
+  description?: string;
+}
+
+const GRADIENT_COLORS = [
+  "from-cyan-400 to-blue-500",
+  "from-pink-400 to-rose-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-400 to-orange-500",
+  "from-emerald-400 to-teal-500",
+];
+
 export default function ShopHome() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<HomeCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchFeatured = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/products?featured=true&limit=8");
-        const data = await res.json();
-        setFeaturedProducts(data.products || []);
+        const [productsRes, categoriesRes] = await Promise.all([
+          fetch("/api/products?featured=true&limit=8"),
+          fetch("/api/categories"),
+        ]);
+        const productsData = await productsRes.json();
+        const categoriesData = await categoriesRes.json();
+        setFeaturedProducts(productsData.products || []);
+        setCategories(categoriesData.categories || []);
       } catch (error) {
-        console.error("Erro ao carregar destaques:", error);
+        console.error("Erro ao carregar dados:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchFeatured();
+    fetchData();
   }, []);
 
   return (
@@ -62,12 +82,14 @@ export default function ShopHome() {
                 Ver Catálogo
                 <FiArrowRight />
               </Link>
-              <Link
-                href="/shop/catalog?category=Beachwear"
-                className="inline-flex items-center justify-center gap-2 border-2 border-pink-600 text-pink-600 px-8 py-3.5 rounded-lg font-medium hover:bg-pink-50 transition-colors"
-              >
-                Beachwear
-              </Link>
+              {categories[0] && (
+                <Link
+                  href={`/shop/catalog?category=${encodeURIComponent(categories[0].name)}`}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-pink-600 text-pink-600 px-8 py-3.5 rounded-lg font-medium hover:bg-pink-50 transition-colors"
+                >
+                  {categories[0].name}
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -119,33 +141,28 @@ export default function ShopHome() {
       </section>
 
       {/* Category Links */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
-          Explore Nossas Categorias
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <Link
-            href="/shop/catalog?category=Beachwear"
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 p-8 text-white hover:shadow-lg transition-shadow"
-          >
-            <h3 className="text-2xl font-bold mb-2">Beachwear</h3>
-            <p className="text-white/80 text-sm">
-              Biquínis, body, maiôs e saídas de praia
-            </p>
-            <FiArrowRight className="absolute bottom-6 right-6 group-hover:translate-x-1 transition-transform" size={24} />
-          </Link>
-          <Link
-            href="/shop/catalog?category=Outwear"
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 p-8 text-white hover:shadow-lg transition-shadow"
-          >
-            <h3 className="text-2xl font-bold mb-2">Outwear</h3>
-            <p className="text-white/80 text-sm">
-              Vestidos, saias, calças e muito mais
-            </p>
-            <FiArrowRight className="absolute bottom-6 right-6 group-hover:translate-x-1 transition-transform" size={24} />
-          </Link>
-        </div>
-      </section>
+      {categories.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+            Explore Nossas Categorias
+          </h2>
+          <div className={`grid grid-cols-1 gap-6 max-w-3xl mx-auto ${categories.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
+            {categories.map((cat, idx) => (
+              <Link
+                key={cat._id}
+                href={`/shop/catalog?category=${encodeURIComponent(cat.name)}`}
+                className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${GRADIENT_COLORS[idx % GRADIENT_COLORS.length]} p-8 text-white hover:shadow-lg transition-shadow`}
+              >
+                <h3 className="text-2xl font-bold mb-2">{cat.name}</h3>
+                {cat.description && (
+                  <p className="text-white/80 text-sm">{cat.description}</p>
+                )}
+                <FiArrowRight className="absolute bottom-6 right-6 group-hover:translate-x-1 transition-transform" size={24} />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured Products */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">

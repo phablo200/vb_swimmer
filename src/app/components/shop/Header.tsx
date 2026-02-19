@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FiMenu, FiX, FiShoppingBag, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "./CartProvider";
 
-const NAV_LINKS = [
+interface NavCategory {
+  name: string;
+  slug: string;
+}
+
+const STATIC_LINKS = [
   { href: "/shop", label: "Início" },
   { href: "/shop/catalog", label: "Catálogo" },
-  { href: "/shop/catalog?category=Beachwear", label: "Beachwear" },
-  { href: "/shop/catalog?category=Outwear", label: "Outwear" },
 ];
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
@@ -17,6 +20,22 @@ const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { itemCount } = useCart();
+  const [categories, setCategories] = useState<NavCategory[]>([]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data.categories || []))
+      .catch(() => {});
+  }, []);
+
+  const navLinks = [
+    ...STATIC_LINKS,
+    ...categories.map((cat) => ({
+      href: `/shop/catalog?category=${encodeURIComponent(cat.name)}`,
+      label: cat.name,
+    })),
+  ];
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -45,7 +64,7 @@ export default function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -75,7 +94,7 @@ export default function Header() {
       {menuOpen && (
         <div className="lg:hidden border-t border-gray-100 bg-white">
           <nav className="px-4 py-4 space-y-2">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

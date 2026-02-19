@@ -16,11 +16,10 @@ interface Product {
   inStock: boolean;
 }
 
-const CATEGORIES = [
-  { value: "", label: "Todos" },
-  { value: "Beachwear", label: "Beachwear" },
-  { value: "Outwear", label: "Outwear" },
-];
+interface CategoryFilter {
+  _id: string;
+  name: string;
+}
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -29,6 +28,14 @@ function CatalogContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [categories, setCategories] = useState<CategoryFilter[]>([]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data.categories || []))
+      .catch(() => {});
+  }, []);
 
   const fetchProducts = useCallback(async (category: string) => {
     setLoading(true);
@@ -63,17 +70,27 @@ function CatalogContent() {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 mb-8">
-        {CATEGORIES.map((cat) => (
+        <button
+          onClick={() => setActiveCategory("")}
+          className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
+            activeCategory === ""
+              ? "bg-pink-600 text-white"
+              : "bg-white text-gray-600 border border-gray-200 hover:border-pink-300 hover:text-pink-600"
+          }`}
+        >
+          Todos
+        </button>
+        {categories.map((cat) => (
           <button
-            key={cat.value}
-            onClick={() => setActiveCategory(cat.value)}
+            key={cat._id}
+            onClick={() => setActiveCategory(cat.name)}
             className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeCategory === cat.value
+              activeCategory === cat.name
                 ? "bg-pink-600 text-white"
                 : "bg-white text-gray-600 border border-gray-200 hover:border-pink-300 hover:text-pink-600"
             }`}
           >
-            {cat.label}
+            {cat.name}
           </button>
         ))}
       </div>

@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const slug = slugify(body.name, { lower: true, strict: true });
+    const slug = slugify(body.name, { lower: true, strict: true, locale: "pt" });
 
     const existingProduct = await Product.findOne({ slug });
     const finalSlug = existingProduct ? `${slug}-${Date.now()}` : slug;

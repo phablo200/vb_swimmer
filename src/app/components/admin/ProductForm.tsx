@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { IProduct } from "@/app/lib/models/Product";
 import Button from "@/app/components/ui/Button";
@@ -14,24 +14,11 @@ interface ProductFormProps {
   product?: IProduct;
 }
 
-const CATEGORIES = [
-  { value: "Beachwear", label: "Beachwear" },
-  { value: "Outwear", label: "Outwear" },
-];
-
-const SUBCATEGORIES: Record<string, string[]> = {
-  Beachwear: ["Biquínis", "Body/Maiô", "Saída de Praia"],
-  Outwear: [
-    "Vestidos",
-    "Short e Saias",
-    "Croppeds e Top",
-    "Calças",
-    "Blusas",
-    "Macaquinhos",
-    "Kimonos",
-    "Sobreposição",
-  ],
-};
+interface CategoryOption {
+  _id: string;
+  name: string;
+  subcategories: string[];
+}
 
 const SIZES = ["PP", "P", "M", "G", "GG", "XG"];
 
@@ -50,7 +37,7 @@ export default function ProductForm({ product }: ProductFormProps) {
     discountPercent: product?.discountPercent?.toString() || "0",
     pixDiscountPercent: product?.pixDiscountPercent?.toString() || "10",
     images: product?.images || [],
-    category: product?.category || "Beachwear",
+    category: product?.category || "",
     subcategory: product?.subcategory || "",
     colors: product?.colors || [],
     sizes: product?.sizes || [],
@@ -60,6 +47,26 @@ export default function ProductForm({ product }: ProductFormProps) {
     featured: product?.featured ?? false,
     tags: product?.tags || [],
   });
+
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(data.categories || []);
+    } catch {
+      console.error("Erro ao carregar categorias");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const selectedCategory = categories.find(
+    (c) => c.name === formData.category
+  );
 
   const [newColor, setNewColor] = useState({ name: "", hex: "#000000" });
   const [newTag, setNewTag] = useState("");
@@ -206,9 +213,10 @@ export default function ProductForm({ product }: ProductFormProps) {
                 }
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
+                <option value="">Selecione...</option>
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
                   </option>
                 ))}
               </select>
@@ -226,7 +234,7 @@ export default function ProductForm({ product }: ProductFormProps) {
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               >
                 <option value="">Selecione...</option>
-                {(SUBCATEGORIES[formData.category] || []).map((sub) => (
+                {(selectedCategory?.subcategories || []).map((sub) => (
                   <option key={sub} value={sub}>
                     {sub}
                   </option>

@@ -13,6 +13,7 @@ import {
   FiShoppingBag,
   FiEye,
   FiEyeOff,
+  FiLayers,
 } from "react-icons/fi";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
@@ -145,6 +146,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       href: "/admin/produtos/novo",
       label: "Novo Produto",
       icon: FiPlusCircle,
+    },
+    {
+      href: "/admin/categorias",
+      label: "Categorias",
+      icon: FiLayers,
     },
   ];
 

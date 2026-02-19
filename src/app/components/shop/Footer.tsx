@@ -1,9 +1,25 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FiShoppingBag, FiInstagram, FiMail, FiPhone } from "react-icons/fi";
+
+interface FooterCategory {
+  _id: string;
+  name: string;
+}
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
 
 export default function Footer() {
+  const [categories, setCategories] = useState<FooterCategory[]>([]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then((data) => setCategories(data.categories || []))
+      .catch(() => {});
+  }, []);
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -28,22 +44,16 @@ export default function Footer() {
               Categorias
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/shop/catalog?category=Beachwear"
-                  className="text-sm hover:text-pink-400 transition-colors"
-                >
-                  Beachwear
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shop/catalog?category=Outwear"
-                  className="text-sm hover:text-pink-400 transition-colors"
-                >
-                  Outwear
-                </Link>
-              </li>
+              {categories.map((cat) => (
+                <li key={cat._id}>
+                  <Link
+                    href={`/shop/catalog?category=${encodeURIComponent(cat.name)}`}
+                    className="text-sm hover:text-pink-400 transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
               <li>
                 <Link
                   href="/shop/catalog"

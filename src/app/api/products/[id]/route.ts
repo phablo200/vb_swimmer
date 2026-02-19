@@ -57,7 +57,7 @@ export async function PUT(
     const body = await request.json();
 
     if (body.name) {
-      const newSlug = slugify(body.name, { lower: true, strict: true });
+      const newSlug = slugify(body.name, { lower: true, strict: true, locale: "pt" });
       const existingProduct = await Product.findOne({
         slug: newSlug,
         _id: { $ne: id },

@@ -81,7 +81,7 @@ const ProductSchema = new Schema<IProduct>(
     category: {
       type: String,
       required: [true, "Categoria é obrigatória"],
-      enum: ["Beachwear", "Outwear"],
+      trim: true,
     },
     subcategory: {
       type: String,
@@ -124,7 +124,10 @@ const ProductSchema = new Schema<IProduct>(
 
 ProductSchema.index({ category: 1, subcategory: 1 });
 ProductSchema.index({ featured: 1 });
-ProductSchema.index({ name: "text", tags: "text" });
+ProductSchema.index(
+  { name: "text", tags: "text" },
+  { default_language: "portuguese" }
+);
 
 const Product: Model<IProduct> =
   mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
