@@ -12,15 +12,90 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* TipTap Editor Styles */
+.tiptap {
+  outline: none;
+}
+
+.tiptap h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #be185d;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #be185d;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #be185d;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap p {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.tiptap strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+.tiptap em {
+  font-style: italic;
+}
+
+.tiptap u {
+  text-decoration: underline;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiptap li {
+  margin-bottom: 0.25rem;
+  color: #4b5563;
+}
+
+.tiptap hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5rem 0;
+}
+
+/* Product description styles (rendered on shop) */
+.prose h1,
+.prose h2,
+.prose h3 {
+  color: #be185d;
+}
+
+.prose hr {
+  border-color: #e5e7eb;
 }
