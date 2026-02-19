@@ -10,6 +10,11 @@ interface NavCategory {
   slug: string;
 }
 
+interface AnnouncementConfig {
+  announcementEnabled: boolean;
+  freeShippingMinValue: number;
+}
+
 const STATIC_LINKS = [
   { href: "/shop", label: "Início" },
   { href: "/shop/catalog", label: "Catálogo" },
@@ -21,11 +26,21 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { itemCount } = useCart();
   const [categories, setCategories] = useState<NavCategory[]>([]);
+  const [announcement, setAnnouncement] = useState<AnnouncementConfig | null>(
+    null
+  );
 
   useEffect(() => {
     fetch("/api/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data.categories || []))
+      .catch(() => {});
+
+    fetch("/api/config/site")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.config) setAnnouncement(data.config);
+      })
       .catch(() => {});
   }, []);
 
@@ -40,9 +55,12 @@ export default function Header() {
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       {/* Top bar */}
-      <div className="bg-pink-600 text-white text-center text-xs py-1.5 font-medium tracking-wide">
-        FRETE GRÁTIS acima de R$299 | Parcele em até 4x sem juros
-      </div>
+      {announcement?.announcementEnabled && (
+        <div className="bg-pink-600 text-white text-center text-xs py-1.5 font-medium tracking-wide">
+          FRETE GRÁTIS acima de R${announcement.freeShippingMinValue} | Parcele
+          em até 4x sem juros
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">

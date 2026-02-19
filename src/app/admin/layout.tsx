@@ -14,6 +14,7 @@ import {
   FiEye,
   FiEyeOff,
   FiLayers,
+  FiSettings,
 } from "react-icons/fi";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
@@ -151,6 +152,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       href: "/admin/categorias",
       label: "Categorias",
       icon: FiLayers,
+    },
+    {
+      href: "/admin/configuracoes",
+      label: "Configurações",
+      icon: FiSettings,
     },
   ];
 
