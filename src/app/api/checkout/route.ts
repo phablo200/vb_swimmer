@@ -23,7 +23,8 @@ function buildWhatsAppMessage(order: {
   subtotal: number;
   notes?: string;
 }): string {
-  let message = `*Novo Pedido - VB Swimwear*\n`;
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+  let message = `*Novo Pedido - ${appName}*\n`;
   message += `Pedido: #${order.orderNumber}\n\n`;
   message += `*Cliente:* ${order.customerName}\n`;
   message += `*Telefone:* ${order.customerPhone}\n`;

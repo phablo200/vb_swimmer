@@ -12,8 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+
 export const metadata: Metadata = {
-  title: "VB Swimwear | Moda Praia com Elegância",
+  title: `${appName} | Moda Praia com Elegância`,
   description:
     "Descubra peças exclusivas de moda praia com design autoral e acabamentos refinados. Biquínis, saídas de praia, vestidos e muito mais.",
 };

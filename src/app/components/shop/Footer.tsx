@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FiShoppingBag, FiInstagram, FiMail, FiPhone } from "react-icons/fi";
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -11,7 +13,7 @@ export default function Footer() {
             <Link href="/shop" className="flex items-center gap-2 mb-4">
               <FiShoppingBag className="text-pink-500" size={24} />
               <span className="text-lg font-bold text-white">
-                VB <span className="text-pink-500">Swimwear</span>
+                {appName}
               </span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed">
@@ -109,7 +111,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-xs text-gray-500">
-              &copy; {new Date().getFullYear()} VB Swimwear. Todos os direitos
+              &copy; {new Date().getFullYear()} {appName}. Todos os direitos
               reservados.
             </p>
           </div>

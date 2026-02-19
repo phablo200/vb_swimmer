@@ -76,7 +76,7 @@ export default function AdminDashboard() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-500 mt-1">
-          Visão geral da sua loja VB Swimwear
+          Visão geral da sua loja {process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear"}
         </p>
       </div>
 

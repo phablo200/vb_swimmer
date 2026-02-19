@@ -12,6 +12,8 @@ const NAV_LINKS = [
   { href: "/shop/catalog?category=Outwear", label: "Outwear" },
 ];
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { itemCount } = useCart();
@@ -37,7 +39,7 @@ export default function Header() {
           <Link href="/shop" className="flex items-center gap-2">
             <FiShoppingBag className="text-pink-600" size={28} />
             <span className="text-xl font-bold tracking-tight text-gray-900">
-              VB <span className="text-pink-600">Swimwear</span>
+              {appName}
             </span>
           </Link>
 

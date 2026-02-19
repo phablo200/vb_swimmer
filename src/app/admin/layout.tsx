@@ -21,6 +21,8 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -90,7 +92,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <FiShoppingBag className="w-8 h-8 text-pink-600" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900">
-                VB Swimwear
+                {appName}
               </h1>
               <p className="text-gray-500 mt-1">Painel Administrativo</p>
             </div>
@@ -156,7 +158,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         >
           {sidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
-        <span className="font-bold text-gray-900">VB Swimwear Admin</span>
+        <span className="font-bold text-gray-900">{appName} Admin</span>
         <button onClick={handleLogout} className="text-gray-600 hover:text-red-600">
           <FiLogOut size={20} />
         </button>
@@ -175,7 +177,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <FiShoppingBag className="text-white" size={20} />
               </div>
               <div>
-                <h2 className="font-bold text-gray-900">VB Swimwear</h2>
+                <h2 className="font-bold text-gray-900">{appName}</h2>
                 <p className="text-xs text-gray-500">Painel Admin</p>
               </div>
             </Link>
