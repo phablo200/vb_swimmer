@@ -2,6 +2,7 @@
 
 import { useState, useEffect, ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   FiPackage,
@@ -90,12 +91,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-100 rounded-full mb-4">
-                <FiShoppingBag className="w-8 h-8 text-pink-600" />
+              <div className="flex justify-center mb-4">
+                <Image
+                  src="/images/logo.jpeg"
+                  alt="B.E.L.A vilas Beachwear"
+                  width={160}
+                  height={64}
+                  className="h-16 w-auto object-contain"
+                  priority
+                />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {appName}
-              </h1>
               <p className="text-gray-500 mt-1">Painel Administrativo</p>
             </div>
 
@@ -179,19 +184,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 lg:translate-x-0 lg:static lg:inset-auto ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 lg:translate-x-0 lg:static lg:inset-auto ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <div className="p-6 border-b border-gray-100">
-            <Link href="/admin" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center">
-                <FiShoppingBag className="text-white" size={20} />
-              </div>
-              <div>
-                <h2 className="font-bold text-gray-900">{appName}</h2>
-                <p className="text-xs text-gray-500">Painel Admin</p>
-              </div>
+            <Link href="/admin" className="flex flex-col gap-1">
+              <Image
+                src="/images/logo.jpeg"
+                alt="B.E.L.A vilas Beachwear"
+                width={140}
+                height={56}
+                className="h-10 w-auto object-contain"
+              />
+              <p className="text-xs text-gray-500">Painel Admin</p>
             </Link>
           </div>
 
@@ -204,11 +209,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
                       ? "bg-pink-50 text-pink-700"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   <Icon size={18} />
                   {item.label}

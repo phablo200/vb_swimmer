@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FiMenu, FiX, FiShoppingBag, FiShoppingCart } from "react-icons/fi";
+import { FiMenu, FiX, FiShoppingCart } from "react-icons/fi";
+import Image from "next/image";
 import { useCart } from "./CartProvider";
 
 interface NavCategory {
@@ -73,11 +74,15 @@ export default function Header() {
           </button>
 
           {/* Logo */}
-          <Link href="/shop" className="flex items-center gap-2">
-            <FiShoppingBag className="text-pink-600" size={28} />
-            <span className="text-xl font-bold tracking-tight text-gray-900">
-              {appName}
-            </span>
+          <Link href="/shop" className="flex items-center">
+            <Image
+              src="/images/logo.jpeg"
+              alt="B.E.L.A vilas Beachwear"
+              width={140}
+              height={56}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}

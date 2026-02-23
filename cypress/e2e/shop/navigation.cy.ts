@@ -33,8 +33,7 @@ describe("Shop - Navegação", () => {
   it("deve exibir o header com navegação", () => {
     cy.visit("/shop");
 
-    cy.contains("VB").should("be.visible");
-    cy.contains("Swimwear").should("be.visible");
+    cy.get('img[alt="B.E.L.A vilas Beachwear"]').should("be.visible");
     cy.contains("Início").should("be.visible");
     cy.contains("Catálogo").should("be.visible");
   });
