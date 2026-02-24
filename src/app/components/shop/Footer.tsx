@@ -18,7 +18,7 @@ export default function Footer() {
     fetch("/api/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data.categories || []))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -98,11 +98,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <FiMail size={14} className="text-pink-500" />
-                <span>contato@vbswimwear.com.br</span>
+                <span>contato@usebelavilas.com.br</span>
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <FiInstagram size={14} className="text-pink-500" />
-                <span>@vbswimwear</span>
+                <span>@usebelavilas</span>
               </li>
             </ul>
           </div>
@@ -117,7 +117,6 @@ export default function Footer() {
                 <span className="px-2 py-1 bg-gray-800 rounded">Visa</span>
                 <span className="px-2 py-1 bg-gray-800 rounded">Mastercard</span>
                 <span className="px-2 py-1 bg-gray-800 rounded">Pix</span>
-                <span className="px-2 py-1 bg-gray-800 rounded">Boleto</span>
               </div>
             </div>
             <p className="text-xs text-gray-500">
