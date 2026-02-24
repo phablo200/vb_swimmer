@@ -90,8 +90,8 @@ export default function ProductForm({ product }: ProductFormProps) {
         compareAtPrice: formData.compareAtPrice
           ? parseFloat(formData.compareAtPrice)
           : undefined,
-        discountPercent: parseInt(formData.discountPercent) || 0,
-        pixDiscountPercent: parseInt(formData.pixDiscountPercent) || 10,
+        discountPercent: formData.discountPercent === "" ? 0 : parseInt(formData.discountPercent),
+        pixDiscountPercent: formData.pixDiscountPercent === "" ? 10 : parseInt(formData.pixDiscountPercent),
       };
 
       const res = await fetch(url, {
@@ -393,11 +393,10 @@ export default function ProductForm({ product }: ProductFormProps) {
               key={size}
               type="button"
               onClick={() => toggleSize(size)}
-              className={`w-14 h-14 rounded-lg font-medium text-sm transition-colors border-2 ${
-                formData.sizes.includes(size)
+              className={`w-14 h-14 rounded-lg font-medium text-sm transition-colors border-2 ${formData.sizes.includes(size)
                   ? "border-pink-600 bg-pink-50 text-pink-700"
                   : "border-gray-200 text-gray-600 hover:border-gray-400"
-              }`}
+                }`}
             >
               {size}
             </button>
