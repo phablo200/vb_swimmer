@@ -10,6 +10,17 @@ interface FooterCategory {
 }
 
 const appName = process.env.NEXT_PUBLIC_APP_NAME || "VB Swimwear";
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "558599430448";
+
+const formatPhoneNumber = (number: string) => {
+  if (!number) return "";
+  // Simple formatting for Brazilian numbers: 5571991426930 -> +55 (71) 99142-6930
+  const match = number.match(/^(\d{2})(\d{2})(\d{5})(\d{4})$/);
+  if (match) {
+    return `+${match[1]} (${match[2]}) ${match[3]}-${match[4]}`;
+  }
+  return number;
+};
 
 export default function Footer() {
   const [categories, setCategories] = useState<FooterCategory[]>([]);
@@ -94,7 +105,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm">
                 <FiPhone size={14} className="text-pink-500" />
-                <span>+55 (85) 9943-0448</span>
+                <span>{formatPhoneNumber(whatsappNumber)}</span>
               </li>
               <li className="flex items-center gap-2 text-sm">
                 <FiMail size={14} className="text-pink-500" />
